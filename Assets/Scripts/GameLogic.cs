@@ -75,6 +75,12 @@ public class GameLogic : MonoBehaviour
             Ball ball = bottle_1Balls[i];
             if(ball.type == type)
             {
+
+                if (bottle_2Balls.Count == 4)
+                {
+                    break;
+                }
+
                 bottle_1Balls.RemoveAt(i);
                 bottle_2Balls.Add(ball);
             }
@@ -83,6 +89,8 @@ public class GameLogic : MonoBehaviour
                 break;
             }
         }
+        bool isWin = CheckWincodition();
+        Debug.Log("Is win" + isWin);
     }
     
     public bool CheckWincodition()

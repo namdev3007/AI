@@ -1,102 +1,167 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public GameGraphic gGraphic;
+    public GameLevelManager gameLevelManager;
 
     public List<Bottle> bottles;
 
-    private IEnumerator Start()
+    private Stack<List<Bottle>> historyStack = new Stack<List<Bottle>>();
+
+
+    private HintSystem hintSystem;
+
+    private void Awake()
+    {
+        hintSystem = new HintSystem();
+    }
+
+
+    public bool ExecuteHint()
+    {
+        if (bottles == null || bottles.Count == 0)
+        {
+            Debug.LogWarning("No bottles available for hint.");
+            return false;
+        }
+
+        var initialState = new GameState(bottles);
+        var solution = hintSystem.FindSolution(initialState);
+
+        if (solution != null && solution.Count > 0)
+        {
+            var move = solution[0];
+            SwitchBall(move.Item1, move.Item2);
+            return true;
+        }
+
+        Debug.Log("No valid moves available or puzzle already solved.");
+        return false;
+    }
+
+    public void LoadLevel(List<int[]> listArray)
     {
         bottles = new List<Bottle>();
 
-        bottles.Add(new Bottle()
+        foreach (int[] arr in listArray)
         {
-            balls = new List<Ball> { new Ball { type = BallType.Red }, new Ball { type = BallType.Green } }
-        });
+            Bottle b = new Bottle();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                int element = arr[i];
+                if (element == 0)
+                    continue;
 
-        bottles.Add(new Bottle()
-        {
-            balls = new List<Ball> { new Ball { type = BallType.Red }, new Ball { type = BallType.Red } }
-        });
-
-        gGraphic.RefreshBottleGraphic(bottles);
-
-        yield return new WaitForSeconds(2f);
-
-
-        //PrintBottles();
-
-        SwitchBall(bottles[0], bottles[1]);
-
-        gGraphic.RefreshBottleGraphic(bottles);
-
-
-
-        //PrintBottles();
+                b.balls.Add(new Ball { type = (BallType)element -1});
+            }
+            bottles.Add(b);
+        }
+        gGraphic.createBottleGraphic(bottles);
     }
 
-    public void PrintBottles()
+    public void DestroyCurrentLevel()
     {
-        Debug.Log("Bottles =====");
-        StringBuilder sb = new StringBuilder();
+        // Clear the bottles list
+        bottles.Clear();
 
-        for (int i = 0; i < bottles.Count; i++)
+        // Clear the history stack
+        historyStack.Clear();
+
+        // Destroy all bottle graphics
+        gGraphic.DestroyAllBottleGraphics();
+
+        gGraphic.selectedBottleIndex = -1;
+    }
+
+    public void AddNewBottle()
+    {
+        SaveState();
+        Bottle newBottle = new Bottle();
+        bottles.Add(newBottle);
+        gGraphic.AddNewBottleGraphic(newBottle);
+    }
+
+    public void SwitchBall(Bottle bottle1, Bottle bottle2)
+    {
+        List<Ball> bottle1Balls = bottle1.balls;
+        List<Ball> bottle2Balls = bottle2.balls;
+
+        if (bottle1Balls.Count == 0 || bottle2Balls.Count == 4)
         {
-
-            Bottle b = bottles[i];
-            sb.Append("Bottle " + (i + 1) + ":");
-            foreach (Ball ball in b.balls)
-            {
-                sb.Append(" " + ball.type);
-                sb.Append(", ");
-            }
-            Debug.Log(sb.ToString());
-            sb.Clear();
+            return;
         }
 
-    }
-
-    public void SwitchBall(Bottle bottle_1, Bottle bottle_2)
-    {
-        List<Ball> bottle_1Balls = bottle_1.balls;
-        List<Ball> bottle_2Balls = bottle_2.balls;
-
-        if (bottle_1Balls.Count == 0)
-            return;
-        if (bottle_1Balls.Count == 4)
-            return;
-
-        int index = bottle_1Balls.Count - 1;
-        Ball b = bottle_1Balls[index];
+        int index = bottle1Balls.Count - 1;
+        Ball b = bottle1Balls[index];
 
         var type = b.type;
 
-        if (bottle_2Balls.Count > 0 && bottle_2Balls[bottle_2Balls.Count - 1].type != type)
+        if (bottle2Balls.Count > 0 && bottle2Balls[bottle2Balls.Count - 1].type != type)
         {
             return;
         }
 
         for (int i = index; i >= 0; i--)
         {
-            Ball ball = bottle_1Balls[i];
+            Ball ball = bottle1Balls[i];
             if (ball.type == type)
             {
-                bottle_1Balls.RemoveAt(i);
-                bottle_2Balls.Add(ball);
+
+                if(bottle2Balls.Count ==4)
+                {
+                    break;
+                }
+                bottle1Balls.RemoveAt(i);
+                bottle2Balls.Add(ball);
             }
             else
             {
                 break;
             }
         }
+        bool isWin = CheckWinCondition();
+
+        Debug.Log("Is win" + isWin);
+        if (isWin)
+        {
+            gameLevelManager.OnLevelComplete();
+        }
     }
 
+    public void SaveState()
+    {
+        List<Bottle> stateCopy = new List<Bottle>();
+        foreach (Bottle bottle in bottles)
+        {
+            Bottle copyBottle = new Bottle();
+            foreach (Ball ball in bottle.balls)
+            {
+                copyBottle.balls.Add(new Ball { type = ball.type });
+            }
+            stateCopy.Add(copyBottle);
+        }
+        historyStack.Push(stateCopy);
+    }
+
+    public void Undo()
+    {
+        if (historyStack.Count == 0) return;
+
+        bottles = historyStack.Pop();
+        gGraphic.RefreshBottleGraphic(bottles);
+    }
+
+
     public void SwitchBall(int bottleIndex1, int bottleIndex2) 
-    { 
+    {
+        SaveState();
+
         Bottle b1 = bottles[bottleIndex1];
         Bottle b2 = bottles[bottleIndex2];
 
@@ -105,7 +170,78 @@ public class GameManager : MonoBehaviour
         gGraphic.RefreshBottleGraphic(bottles);
     }
 
-    public bool CheckWincodition()
+
+
+    public List<SwitchBallCommand> CheckSwitchBall(int  bottleIndex1, int bottleIndex2)
+    {
+        List<SwitchBallCommand > commands = new List<SwitchBallCommand>();
+
+        Bottle bottle1 = bottles[bottleIndex1];
+        Bottle bottle2 = bottles[bottleIndex2];
+
+        List<Ball> bottle1Balls = bottle1.balls;
+        List<Ball> bottle2Balls = bottle2.balls;
+
+        if (bottle1Balls.Count == 0 || bottle2Balls.Count == 4)
+            return commands;
+
+        int index = bottle1Balls.Count - 1;
+        Ball b = bottle1Balls[index];
+
+        var type = b.type;
+
+        if (bottle2Balls.Count > 0 && bottle2Balls[bottle2Balls.Count - 1].type != type)
+        {
+            return commands;
+        }
+        int targetIndex = bottle2Balls.Count;
+
+        for (int i = index; i >= 0; i--)
+        {
+
+            Ball ball = bottle1Balls[i];
+            if (ball.type == type)
+            {
+                if (targetIndex >= 4)
+                {
+                    break;
+                }
+
+                int fromBallIndex = i;
+                int toBallIndex = targetIndex;
+                int fromBottlelIndex = bottleIndex1;
+                int toBottlelIndex = bottleIndex2;
+
+                commands.Add(new SwitchBallCommand
+                {
+                    type = type,
+                    fromBallIndex = fromBallIndex,
+                    toBallIndex = toBallIndex,
+                    fromBottleIndex = fromBottlelIndex,
+                    toBottleIndex = toBottlelIndex,
+                });
+
+                targetIndex++;
+
+                if (bottle2Balls.Count == 4)
+                {
+                    break;
+                }
+
+                //bottle1Balls.RemoveAt(i);
+                //bottle2Balls.Add(ball);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return commands;
+    }
+
+
+    public bool CheckWinCondition()
     {
         bool winFlag = true;
         foreach (Bottle bottle in bottles)
@@ -137,6 +273,82 @@ public class GameManager : MonoBehaviour
 
         }
         return winFlag;
+    }
+
+    public bool CheckWincoditionDFS()
+    {
+        HashSet<int> visited = new HashSet<int>();
+
+        for (int i = 0; i < bottles.Count; i++)
+        {
+            if (!visited.Contains(i) && !IsBottleWinCondition(bottles[i]))
+            {
+                if (!DFS(i, visited))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private bool DFS(int index, HashSet<int> visited)
+    {
+        visited.Add(index);
+
+        Bottle bottle = bottles[index];
+
+        // Kiểm tra nếu bình hiện tại không đáp ứng điều kiện thắng
+        if (!IsBottleWinCondition(bottle))
+        {
+            return false;
+        }
+
+        for (int i = 0; i < bottles.Count; i++)
+        {
+            if (!visited.Contains(i) && !IsBottleWinCondition(bottles[i]))
+            {
+                if (!DFS(i, visited))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private bool IsBottleWinCondition(Bottle bottle)
+    {
+        if (bottle.balls.Count == 0)
+            return true;
+
+        if (bottle.balls.Count < 4)
+            return false;
+
+        BallType type = bottle.balls[0].type;
+        foreach (Ball ball in bottle.balls)
+        {
+            if (ball.type != type)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public class SwitchBallCommand
+    {
+        public BallType type;
+
+        public int fromBottleIndex;
+        public int fromBallIndex;
+
+        public int toBottleIndex;
+        public int toBallIndex;
+
     }
 
     public class Bottle

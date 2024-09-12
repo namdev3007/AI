@@ -22,7 +22,9 @@ public enum BallGraphicType
 public class BallGraphic : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
+
     public List<Sprite> ballSprites;
+    
     private Dictionary<BallGraphicType, Sprite> spriteDictionary;
 
     private void Awake()
@@ -61,4 +63,38 @@ public class BallGraphic : MonoBehaviour
             spriteRenderer.sprite = null;
         }
     }
+
+    public static BallGraphicType ConvertFromGameType(GameManager.BallType ballType)
+    {
+        switch (ballType)
+        {
+            case GameManager.BallType.Orange:
+                return BallGraphicType.Orange;
+            case GameManager.BallType.Blue:
+                return BallGraphicType.Blue;
+            case GameManager.BallType.Green:
+                return BallGraphicType.Green;
+            case GameManager.BallType.Red:
+                return BallGraphicType.Red;
+            case GameManager.BallType.Purple:
+                return BallGraphicType.Purple;
+            case GameManager.BallType.Pink:
+                return BallGraphicType.Pink;
+            case GameManager.BallType.Yellow:
+                return BallGraphicType.Yellow;
+            case GameManager.BallType.DarkBlue:
+                return BallGraphicType.DarkBlue;
+            case GameManager.BallType.LightBlue:
+                return BallGraphicType.LightBlue;
+            case GameManager.BallType.LightGreen:
+                return BallGraphicType.LightGreen;
+            case GameManager.BallType.Brown:
+                return BallGraphicType.Brown;
+            case GameManager.BallType.Gray:
+                return BallGraphicType.Gray;
+            default:
+                return BallGraphicType.None;
+        }
+    }
+
 }

@@ -1,15 +1,21 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BottleGraphic : MonoBehaviour
 {
+    public GameGraphic gameGraphic;
+
     public int index;
+
     public BallGraphic[] ballGraphics;
+
+    public Transform bottleUpTransfrom;
 
     private void OnMouseUpAsButton()
     {
-        Debug.Log("chon bottle" +  index);
+        gameGraphic.OnClickBottle(index);
     }
 
     public void SetGraphic(GameManager.BallType[] ballTypes)
@@ -18,19 +24,17 @@ public class BottleGraphic : MonoBehaviour
         {
             if (i >= ballTypes.Length)
             {
-                ballGraphics[i].SetColor(BallGraphicType.None); // Khi không có bóng, đặt None
+                ballGraphics[i].SetColor(BallGraphicType.None); 
             }
             else
             {
-                BallGraphicType type = ConvertBallTypeToGraphicType(ballTypes[i]);
-                ballGraphics[i].SetColor(type);  // Gán đúng sprite bóng
+                SetGraphic(i, ballTypes[i]);
             }
         }
     }
 
     private BallGraphicType ConvertBallTypeToGraphicType(GameManager.BallType ballType)
     {
-        // Ánh xạ từ BallType sang BallGraphicType
         switch (ballType)
         {
             case GameManager.BallType.Orange:
@@ -58,7 +62,77 @@ public class BottleGraphic : MonoBehaviour
             case GameManager.BallType.Gray:
                 return BallGraphicType.Gray;
             default:
-                return BallGraphicType.None; // Nếu không có bóng nào phù hợp, đặt None
+                return BallGraphicType.None;
         }
+    }
+    public void SetGraphic(int index, GameManager.BallType ballType)
+    {
+        BallGraphicType colorType;
+
+        switch (ballType)
+        {
+            case GameManager.BallType.Red:
+                colorType = BallGraphicType.Red;
+                break;
+            case GameManager.BallType.Green:
+                colorType = BallGraphicType.Green;
+                break;
+            case GameManager.BallType.Orange:
+                colorType = BallGraphicType.Orange;
+                break;
+            case GameManager.BallType.Blue:
+                colorType = BallGraphicType.Blue;
+                break;
+            case GameManager.BallType.Purple:
+                colorType = BallGraphicType.Purple;
+                break;
+            case GameManager.BallType.Pink:
+                colorType = BallGraphicType.Pink;
+                break;
+            case GameManager.BallType.Yellow:
+                colorType = BallGraphicType.Yellow;
+                break;
+            case GameManager.BallType.DarkBlue:
+                colorType = BallGraphicType.DarkBlue;
+                break;
+            case GameManager.BallType.LightBlue:
+                colorType = BallGraphicType.LightBlue;
+                break;
+            case GameManager.BallType.LightGreen:
+                colorType = BallGraphicType.LightGreen;
+                break;
+            case GameManager.BallType.Brown:
+                colorType = BallGraphicType.Brown;
+                break;
+            case GameManager.BallType.Gray:
+                colorType = BallGraphicType.Gray;
+                break;
+            default:
+                colorType = BallGraphicType.None;
+                break;
+        }
+
+        ballGraphics[index].SetColor(colorType);
+    }
+
+    public void SetGraphicNone(int index) 
+    {
+        ballGraphics[index].SetColor(BallGraphicType.None);
+    }
+
+    public Vector3 GetBallPosition(int index)
+    {
+        if (index < 0 || index >= ballGraphics.Length)
+        {
+            Debug.LogError($"Index {index} is out of range in ballGraphics array.");
+            return Vector3.zero; // Trả về giá trị mặc định hoặc xử lý lỗi khác.
+        }
+        return ballGraphics[index].transform.position;
+    }
+
+
+    public Vector3 GetBottleUpPosition()
+    {
+        return bottleUpTransfrom.position;
     }
 }
