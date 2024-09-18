@@ -79,13 +79,7 @@ public class GameManager : MonoBehaviour
         gGraphic.selectedBottleIndex = -1;
     }
 
-    public void AddNewBottle()
-    {
-        SaveState();
-        Bottle newBottle = new Bottle();
-        bottles.Add(newBottle);
-        gGraphic.AddNewBottleGraphic(newBottle);
-    }
+
 
     public void SwitchBall(Bottle bottle1, Bottle bottle2)
     {
@@ -274,6 +268,7 @@ public class GameManager : MonoBehaviour
         }
         return winFlag;
     }
+
 
     public bool CheckWincoditionDFS()
     {

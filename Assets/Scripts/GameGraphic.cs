@@ -62,6 +62,8 @@ public class GameGraphic : MonoBehaviour
             bg.SetGraphic(ballTypes.ToArray());
         }
 
+
+
         // Tính toán số hàng và số cột
         int numberOfRows = Mathf.Min(2, Mathf.CeilToInt(bottleGraphics.Count / 4f));
         int numberOfColumns = Mathf.CeilToInt(bottleGraphics.Count / (float)numberOfRows);
@@ -85,20 +87,80 @@ public class GameGraphic : MonoBehaviour
         }
     }
 
+    public void AddNewBottle()
+    {
+ 
+        GameManager.Bottle newBottle = new GameManager.Bottle();
+        gameManager.bottles.Add(newBottle);  // Thêm chai mới vào danh sách chai của gameManager
 
+        BottleGraphic newBottleGraphic = Instantiate(prefabBottleGraphic);
+        newBottleGraphic.transform.SetParent(transform, false);  
+
+        // Cập nhật UI với Bottle mới
+        bottleGraphics.Add(newBottleGraphic);  // Thêm BottleGraphic mới vào danh sách bottleGraphics
+
+        UpdateBottlePositions();
+    }
+
+    private void UpdateBottlePositions()
+    {
+        // Tính toán số hàng và số cột
+        int numberOfRows = Mathf.Min(2, Mathf.CeilToInt(bottleGraphics.Count / 4f));
+        int numberOfColumns = Mathf.CeilToInt(bottleGraphics.Count / (float)numberOfRows);
+
+        // Tính toán khoảng cách giữa các chai
+        Vector3 pos = bottleStartPosition;
+        float rowSpacing = bottleDistance.y;
+        float columnSpacing = bottleDistance.x;
+
+        for (int i = 0; i < bottleGraphics.Count; i++)
+        {
+            int row = i / numberOfColumns;
+            int column = i % numberOfColumns;
+
+            // Tính toán vị trí dựa trên hàng và cột
+            pos.x = bottleStartPosition.x + column * columnSpacing;
+            pos.y = bottleStartPosition.y - row * rowSpacing;
+
+            bottleGraphics[i].transform.position = pos;
+            bottleGraphics[i].index = i;  // Cập nhật chỉ mục của chai
+        }
+    }
 
     public void AddNewBottleGraphic(GameManager.Bottle newBottle)
     {
+        // Instantiate the new BottleGraphic prefab
         BottleGraphic bg = Instantiate(prefabBottleGraphic);
+
+        // Add it to the bottleGraphics list
         bottleGraphics.Add(bg);
+
+        // Set initial graphic (empty bottle)
         bg.SetGraphic(new GameManager.BallType[0]);
 
-        Vector3 pos = bottleStartPosition + bottleDistance * bottleGraphics.Count;
+        // Calculate position for the new bottle
+        int bottleCount = bottleGraphics.Count;
+        int numberOfRows = Mathf.Min(2, Mathf.CeilToInt(bottleCount / 4f));
+        int numberOfColumns = Mathf.CeilToInt(bottleCount / (float)numberOfRows);
+
+        // Calculate the position of the new bottle
+        Vector3 pos = bottleStartPosition;
+        float rowSpacing = bottleDistance.y;
+        float columnSpacing = bottleDistance.x;
+
+        int row = (bottleCount - 1) / numberOfColumns;
+        int column = (bottleCount - 1) % numberOfColumns;
+
+        pos.x = bottleStartPosition.x + column * columnSpacing;
+        pos.y = bottleStartPosition.y - row * rowSpacing;
+
+        // Set the position of the new bottle graphic
         bg.transform.position = pos;
 
-        bg.index = bottleGraphics.Count - 1;
-
+        // Update the index of the new bottle
+        bg.index = bottleCount - 1;
     }
+
 
     public void DestroyAllBottleGraphics()
     {
@@ -166,7 +228,6 @@ public class GameGraphic : MonoBehaviour
             }
         }
     }
-
 
     private IEnumerator TransitionSelectionToNewBottle(int oldBottleIndex, int newBottleIndex)
     {
@@ -244,7 +305,7 @@ public class GameGraphic : MonoBehaviour
 
         while (Vector3.Distance(previewBall.transform.position, upPosition) > 0.005f)
         {
-            previewBall.transform.position = Vector3.MoveTowards(previewBall.transform.position, upPosition, 10 * Time.deltaTime);
+            previewBall.transform.position = Vector3.MoveTowards(previewBall.transform.position, upPosition, 15 * Time.deltaTime);
             yield return null;
         }
 
@@ -252,7 +313,7 @@ public class GameGraphic : MonoBehaviour
     }
 
 
-    private IEnumerator MoveBallDown(int bottleIndex)
+    public IEnumerator MoveBallDown(int bottleIndex)
     {
         isSwitchingBall = true;
 
@@ -278,7 +339,7 @@ public class GameGraphic : MonoBehaviour
 
         while (Vector3.Distance(previewBall.transform.position, downPosition) > 0.005f)
         {
-            previewBall.transform.position = Vector3.MoveTowards(previewBall.transform.position, downPosition, 10 * Time.deltaTime);
+            previewBall.transform.position = Vector3.MoveTowards(previewBall.transform.position, downPosition, 15 * Time.deltaTime);
             yield return null;
         }
 
@@ -289,6 +350,8 @@ public class GameGraphic : MonoBehaviour
 
         isSwitchingBall = false;
     }
+
+
 
     private bool isSwitchingBall = false;
 
@@ -322,11 +385,6 @@ public class GameGraphic : MonoBehaviour
                 yield return new WaitForSeconds(0.06f);
 
             }
-            //foreach (GameManager.SwitchBallCommand command in commands) 
-            //{
-            //    StartCoroutine(SwitchBall(command));
-            //    yield return new WaitForSeconds(0.1f);
-            //}
             while (pendingBalls > 0)
             {
                 yield return null;
@@ -362,13 +420,6 @@ public class GameGraphic : MonoBehaviour
         var ballObject = Instantiate(prefabBallGraphic, spawnPosition, Quaternion.identity);
 
         ballObject.SetColor(BallGraphic.ConvertFromGameType(command.type));
-
-        //Queue<Vector3> queueMovement = new Queue<Vector3>();
-
-        //queueMovement.Enqueue(bottleGraphics[command.fromBottleIndex].GetBallPosition(command.fromBallIndex));
-        //queueMovement.Enqueue(bottleGraphics[command.fromBottleIndex].GetBottleUpPosition());
-        //queueMovement.Enqueue(bottleGraphics[command.toBottleIndex].GetBottleUpPosition());
-        //queueMovement.Enqueue(bottleGraphics[command.toBottleIndex].GetBallPosition(command.toBallIndex));
 
 
         while (movment.Count > 0)

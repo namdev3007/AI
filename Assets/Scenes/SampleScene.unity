@@ -170,8 +170,8 @@ MonoBehaviour:
   prefabBallGraphic: {fileID: 791359861}
   prefabBottleGraphic: {fileID: 52926434}
   bottleGraphics: []
-  bottleStartPosition: {x: -8.5, y: 0, z: 0}
-  bottleDistance: {x: 3.5, y: -6, z: 0}
+  bottleStartPosition: {x: -8.5, y: 3, z: 0}
+  bottleDistance: {x: 3.5, y: 6.5, z: 0}
 --- !u!114 &19998773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +213,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 19998773}
   levelReader: {fileID: 19998774}
+  levelButtonManager: {fileID: 1804139494}
+  homeUIManager: {fileID: 1804139493}
   currentLevel: 1
 --- !u!1 &41594986
 GameObject:
@@ -298,7 +300,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 41594989}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &41594989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 6
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -616,7 +642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1394,7 +1420,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1967,7 +1993,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 4 demo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1994,7 +2020,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 58.25
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2280,7 +2306,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1061787550}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1061787550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2611,7 +2649,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1167168305}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1167168305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2945,7 +2995,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1260590883}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1260590883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3064,9 +3126,9 @@ RectTransform:
   - {fileID: 1286401534}
   m_Father: {fileID: 1804139492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1062, y: -526.5299}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 697.5, y: 463.0598}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1281402489
@@ -3215,7 +3277,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1286401536}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1286401536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3522,7 +3596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3912,6 +3986,7 @@ GameObject:
   - component: {fileID: 1595466302}
   - component: {fileID: 1595466304}
   - component: {fileID: 1595466303}
+  - component: {fileID: 1595466305}
   m_Layer: 5
   m_Name: Map
   m_TagString: Untagged
@@ -3936,7 +4011,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 532}
+  m_AnchoredPosition: {x: -686, y: 532}
   m_SizeDelta: {x: 336.5, y: 97.512596}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1595466303
@@ -3977,6 +4052,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595466301}
   m_CullTransparentMesh: 1
+--- !u!114 &1595466305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595466301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1595466303}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnUILevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1627722098
 GameObject:
   m_ObjectHideFlags: 0
@@ -4151,6 +4282,8 @@ GameObject:
   - component: {fileID: 1804139490}
   - component: {fileID: 1804139489}
   - component: {fileID: 1804139493}
+  - component: {fileID: 1804139494}
+  - component: {fileID: 1804139495}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -4258,6 +4391,58 @@ MonoBehaviour:
   addBottleCount: {fileID: 2067221804}
   levelReader: {fileID: 19998774}
   gameManager: {fileID: 19998773}
+  gameLevelManager: {fileID: 19998775}
+  gameGraphic: {fileID: 19998772}
+--- !u!114 &1804139494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804139488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec32d5bffcb0af40b8ced53f6618201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelButtons:
+  - {fileID: 41594988}
+  - {fileID: 1260590882}
+  - {fileID: 1831155887}
+  - {fileID: 1167168304}
+  - {fileID: 1061787549}
+  - {fileID: 1286401535}
+  unlockedLevel: 0
+  gameLevelManager: {fileID: 19998775}
+  lockLevels:
+  - {fileID: 1061794326}
+  - {fileID: 1024008944}
+  - {fileID: 945354013}
+  - {fileID: 1227264587}
+  - {fileID: 1447304114}
+  - {fileID: 1540896087}
+  unlockLevels:
+  - {fileID: 1845737840}
+  - {fileID: 1336133384}
+  - {fileID: 721765323}
+  - {fileID: 683114290}
+  - {fileID: 1469504713}
+  - {fileID: 308438589}
+--- !u!114 &1804139495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804139488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c93ca6e40ba454992cebd65e1e6d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 19998770}
+  uIGamePlay: {fileID: 1268682261}
+  uILevel: {fileID: 1281402487}
 --- !u!1 &1831155885
 GameObject:
   m_ObjectHideFlags: 0
@@ -4342,7 +4527,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1831155888}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1804139495}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: TurnOnGamePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1831155888
 MonoBehaviour:
   m_ObjectHideFlags: 0

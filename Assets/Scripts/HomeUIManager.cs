@@ -1,74 +1,78 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿    using System.Collections;
+    using System.Collections.Generic;
+    using TMPro;
+    using UnityEngine;
 
-public class HomeUIManager : MonoBehaviour
-{
-    public TextMeshProUGUI text_level;
-    public TextMeshProUGUI addBottleCount;
-
-    public GameLevelReader levelReader;
-    public GameManager gameManager;
-
-    public System.Action OnClickButtonSetting;
-    public System.Action OnClickButtonReload;
-    public System.Action OnClickButtonHint;
-    public System.Action OnClickButtonUndo;
-    public System.Action OnClickButtonAddBottle;
-
-    private int addBottleClickCount = 2; 
-
-    void Start()
+    public class HomeUIManager : MonoBehaviour
     {
-        OnClickButtonUndo = gameManager.Undo;
-        OnClickButtonAddBottle = gameManager.AddNewBottle;
+        public TextMeshProUGUI text_level;
+        public TextMeshProUGUI addBottleCount;
 
-        UpdateAddBottleCountText(); 
-    }
+        public GameLevelReader levelReader;
+        public GameManager gameManager;
+        public GameLevelManager gameLevelManager;
+        public GameGraphic gameGraphic;
 
-    public void SetLevelText(int level)
-    {
-        text_level.text = "Level " + level.ToString();
-    }
+        public System.Action OnClickButtonSetting;
+        public System.Action OnClickButtonReload;
+        public System.Action OnClickButtonHint;
+        public System.Action OnClickButtonUndo;
+        public System.Action OnClickButtonAddBottle;
 
-    public void Click_ButtonUndo()
-    {
-        OnClickButtonUndo?.Invoke();
-    }
+        private int addBottleClickCount = 2; 
 
-    public void Click_ButtonAddBottle()
-    {
-        if (addBottleClickCount > 0)
+        void Start()
         {
-            OnClickButtonAddBottle?.Invoke();
-            addBottleClickCount--;
-            UpdateAddBottleCountText();
-        }
-    }
+            OnClickButtonUndo = gameManager.Undo;
+            OnClickButtonAddBottle = gameGraphic.AddNewBottle;
+            OnClickButtonReload = gameLevelManager.ReloadLevel;
 
-    private void UpdateAddBottleCountText()
-    {
-        addBottleCount.text =  addBottleClickCount.ToString();
-    }
+            UpdateAddBottleCountText(); 
+        }
+
+        public void SetLevelText(int level)
+        {
+            text_level.text = "Level " + level.ToString();
+        }
+
+        public void Click_ButtonUndo()
+        {
+            OnClickButtonUndo?.Invoke();
+        }
+
+        public void Click_ButtonReload()
+        {
+            OnClickButtonReload?.Invoke();
+        }    
+
+        public void Click_ButtonAddBottle()
+        {
+            if (addBottleClickCount > 0)
+            {
+                OnClickButtonAddBottle?.Invoke();
+                addBottleClickCount--;
+                UpdateAddBottleCountText();
+            }
+        }
+
+        private void UpdateAddBottleCountText()
+        {
+            addBottleCount.text =  addBottleClickCount.ToString();
+        }
 
     public void Click_ButtonHint()
     {
         if (gameManager != null)
         {
             bool moveMade = gameManager.ExecuteHint();
-            if (moveMade)
+
+            if (moveMade && gameGraphic.selectedBottleIndex != -1)
             {
-                Debug.Log("Hint executed: A ball was moved automatically.");
+                StartCoroutine(gameGraphic.MoveBallDown(gameGraphic.selectedBottleIndex));
             }
-            else
-            {
-                Debug.Log("No valid moves available or puzzle already solved.");
-            }
-        }
-        else
-        {
-            Debug.LogError("GameManager reference is missing in HomeUIManager.");
         }
     }
+
+
+
 }
